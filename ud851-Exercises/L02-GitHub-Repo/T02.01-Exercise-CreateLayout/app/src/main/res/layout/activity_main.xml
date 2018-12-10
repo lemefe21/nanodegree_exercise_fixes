@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="22sp"
-        android:hint="Enter a query and then click search"/>
+        android:hint="Enter a query, then click Search"/>
 
     <!--OK (12) Add a TextView-->
     <!--OK (13) Give the TextView an id of @+id/tv_url_display-->
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:textSize="22sp"
         android:layout_marginTop="8dp"
-        android:text="Your search will show here!"/>
+        android:text="Click search and your URL will show up here!"/>
 
     <!--OK (18) Add a ScrollView-->
     <!--OK (19) Set the width to match_parent and the height to wrap_content-->
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="Please, make a search..."/>
+            android:text="Make a search!"/>
 
     </ScrollView>
 
