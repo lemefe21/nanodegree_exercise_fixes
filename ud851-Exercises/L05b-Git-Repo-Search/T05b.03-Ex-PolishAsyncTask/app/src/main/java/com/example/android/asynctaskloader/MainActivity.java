@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<String> {
 
     /* A constant to save and restore the URL that is being displayed */
-    private static final String SEARCH_QUERY_URL_EXTRA = "query";
+        private static final String SEARCH_QUERY_URL_EXTRA = "query";
 
     /*
      * This number will uniquely identify our Loader and is chosen arbitrarily. You can change this
