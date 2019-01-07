@@ -27,8 +27,8 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 import android.widget.Toast;
 
-// TODO (1) Implement OnSharedPreferenceChangeListener
-public class SettingsFragment extends PreferenceFragmentCompat {
+// OK (1) Implement OnSharedPreferenceChangeListener
+public class SettingsFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -39,6 +39,27 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         // TODO (3) Get the preference screen, get the number of preferences and iterate through
         // all of the preferences if it is not a checkbox preference, call the setSummary method
         // passing in a preference and the value of the preference
+
+        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        PreferenceScreen preferenceScreen = getPreferenceScreen();
+        int preferenceCount = preferenceScreen.getPreferenceCount();
+
+        for(int i = 0; i < preferenceCount; i++){
+            Preference preference = preferenceScreen.getPreference(i);
+
+        }
+
+    }
+
+    private void setPreferenceSummary(Preference preference, String value) {
+        if(preference instanceof ListPreference) {
+            ListPreference listPreference = (ListPreference) preference;
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+
     }
 
     // TODO (4) Override onSharedPreferenceChanged and, if it is not a checkbox preference,
