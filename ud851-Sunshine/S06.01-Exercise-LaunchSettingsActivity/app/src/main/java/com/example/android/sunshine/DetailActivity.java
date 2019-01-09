@@ -50,10 +50,27 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail, menu);
-        MenuItem menuItem = menu.findItem(R.id.action_share);
-        menuItem.setIntent(createShareForecastIntent());
+        //MenuItem menuItem = menu.findItem(R.id.action_share);
+        //menuItem.setIntent(createShareForecastIntent());
         return true;
     }
 
-    // TODO (7) Launch SettingsActivity when the Settings option is clicked
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId = item.getItemId();
+
+        if(itemId == R.id.action_share) {
+            item.setIntent(createShareForecastIntent());
+        }
+
+        if(itemId == R.id.action_settings) {
+            Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+            startActivity(startSettingsActivity);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // OK (7) Launch SettingsActivity when the Settings option is clicked
 }
