@@ -15,6 +15,7 @@
  */
 package com.example.android.sunshine;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -153,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements
      *
      * @return Return a new Loader instance that is ready to start loading.
      */
+    @SuppressLint("StaticFieldLeak")
     @Override
     public Loader<String[]> onCreateLoader(int id, final Bundle loaderArgs) {
 
@@ -346,11 +348,17 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         }
 
-        // TODO (1) Add new Activity called SettingsActivity using Android Studio wizard
-        // Do step 2 in SettingsActivity
-        // TODO (2) Set setDisplayHomeAsUpEnabled to true on the support ActionBar
+        if(id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
 
-        // TODO (6) Launch SettingsActivity when the Settings option is clicked
+        // OK (1) Add new Activity called SettingsActivity using Android Studio wizard
+        // Do step 2 in SettingsActivity
+        // OK (2) Set setDisplayHomeAsUpEnabled to true on the support ActionBar
+
+        // OK (6) Launch SettingsActivity when the Settings option is clicked
 
         return super.onOptionsItemSelected(item);
     }
