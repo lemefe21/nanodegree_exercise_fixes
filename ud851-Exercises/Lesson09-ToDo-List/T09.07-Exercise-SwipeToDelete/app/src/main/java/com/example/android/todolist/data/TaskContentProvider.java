@@ -244,7 +244,7 @@ public class TaskContentProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
 
         }
-        
+
     }
 
 }
