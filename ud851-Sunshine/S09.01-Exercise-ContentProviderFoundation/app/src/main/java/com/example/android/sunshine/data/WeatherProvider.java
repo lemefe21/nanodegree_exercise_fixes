@@ -47,7 +47,7 @@ public class WeatherProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
-    WeatherDbHelper mOpenHelper;
+    private WeatherDbHelper mOpenHelper;
 
 //  OK (6) Write a method called buildUriMatcher where you match URI's to their numeric ID
 
@@ -56,7 +56,7 @@ public class WeatherProvider extends ContentProvider {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(WeatherContract.CONTENT_AUTHORITY, WeatherContract.PATH_WEATHER, CODE_WEATHER);
-        uriMatcher.addURI(WeatherContract.CONTENT_AUTHORITY, WeatherContract.PATH_WEATHER + "/*", CODE_WEATHER_WITH_DATE);
+        uriMatcher.addURI(WeatherContract.CONTENT_AUTHORITY, WeatherContract.PATH_WEATHER + "/#", CODE_WEATHER_WITH_DATE);
 
         return uriMatcher;
     }
@@ -131,7 +131,8 @@ public class WeatherProvider extends ContentProvider {
                 String date = uri.getPathSegments().get(1);
 
                 retCursor = db.query(WeatherContract.WeatherEntry.TABLE_NAME,
-                        projection, "date=?", new String[]{date}, null, null, sortOrder);
+                        projection, WeatherContract.WeatherEntry.COLUMN_DATE + "=?",
+                        new String[]{date}, null, null, sortOrder);
 
                 break;
 
