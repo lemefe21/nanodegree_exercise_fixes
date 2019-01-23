@@ -187,12 +187,6 @@ public class MainActivity extends AppCompatActivity implements
                 .registerOnSharedPreferenceChangeListener(this);*/
     }
 
-    private void showLoading() {
-
-
-
-    }
-
     /**
      * Uses the URI scheme for showing a location found on a map in conjunction with
      * an implicit Intent. This super-handy Intent is detailed in the "Common Intents" page of
@@ -219,11 +213,11 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-//  TODO (21) Refactor onCreateLoader to return a Loader<Cursor>, not Loader<String[]>
+//  OK (21) Refactor onCreateLoader to return a Loader<Cursor>, not Loader<String[]>
     /**
      * Instantiate and return a new Loader for the given ID.
      *
-     * @param id The ID whose loader is to be created.
+     * @param //id The ID whose loader is to be created.
      * @param loaderArgs Any arguments supplied by the caller.
      *
      * @return Return a new Loader instance that is ready to start loading.
@@ -267,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         //      OK (27) Remove the previous body of onLoadFinished
-        //      TODO (31) If the Cursor's size is not equal to 0, call showWeatherDataView
 
         /*mLoadingIndicator.setVisibility(View.INVISIBLE);
         mForecastAdapter.setWeatherData(data);
@@ -288,6 +281,7 @@ public class MainActivity extends AppCompatActivity implements
         //      OK (30) Smooth scroll the RecyclerView to mPosition
         mRecyclerView.smoothScrollToPosition(mPosition);
 
+        //      OK (31) If the Cursor's size is not equal to 0, call showWeatherDataView
         if(data.getCount() != 0) {
             showWeatherDataView();
         }
@@ -304,11 +298,14 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-//      TODO (32) Call mForecastAdapter's swapCursor method and pass in null
+//      OK (32) Call mForecastAdapter's swapCursor method and pass in null
         /*
          * Since this Loader's data is now invalid, we need to clear the Adapter that is
          * displaying the data.
          */
+
+        mForecastAdapter.swapCursor(null);
+
     }
 
     /**
@@ -354,7 +351,14 @@ public class MainActivity extends AppCompatActivity implements
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }*/
 
-//  TODO (34) Create a method called showLoading that shows the loading indicator and hides the data
+//  OK (34) Create a method called showLoading that shows the loading indicator and hides the data
+
+    private void showLoading() {
+
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+
+    }
 
     /**
      * This is where we inflate and set up the menu for this Activity.
@@ -401,9 +405,9 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    /*@Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        /*
+        *//*
          * Set this flag to true so that when control returns to MainActivity, it can refresh the
          * data.
          *
@@ -412,7 +416,7 @@ public class MainActivity extends AppCompatActivity implements
          * job done for now. Later in this course, we are going to show you more elegant ways to
          * handle converting the units from celsius to fahrenheit and back without hitting the
          * network again by keeping a copy of the data in a manageable format.
-         */
+         *//*
         PREFERENCES_HAVE_BEEN_UPDATED = true;
-    }
+    }*/
 }
