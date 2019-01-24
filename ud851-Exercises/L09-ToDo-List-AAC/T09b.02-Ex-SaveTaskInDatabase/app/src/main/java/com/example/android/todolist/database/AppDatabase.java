@@ -16,13 +16,16 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "todolist";
     private static AppDatabase sInstance;
 
+    //use a singleton pattern here...
+
     public static AppDatabase getInstance(Context context) {
         if (sInstance == null) {
             synchronized (LOCK) {
                 Log.d(LOG_TAG, "Creating new database instance");
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class, AppDatabase.DATABASE_NAME)
-                        // TODO (2) call allowMainThreadQueries before building the instance
+                        // OK (2) call allowMainThreadQueries before building the instance
+                        .allowMainThreadQueries() //TEMPORALLY
                         .build();
             }
         }
