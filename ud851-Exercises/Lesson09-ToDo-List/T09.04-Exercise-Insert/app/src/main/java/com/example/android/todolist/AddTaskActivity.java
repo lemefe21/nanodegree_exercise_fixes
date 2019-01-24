@@ -16,17 +16,22 @@
 
 package com.example.android.todolist;
 
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
+
+import com.example.android.todolist.data.TaskContract;
 
 
 public class AddTaskActivity extends AppCompatActivity {
 
     // Declare a member variable to keep track of a task's selected mPriority
     private int mPriority;
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +40,7 @@ public class AddTaskActivity extends AppCompatActivity {
         // Initialize to highest mPriority by default (mPriority = 1)
         ((RadioButton) findViewById(R.id.radButton1)).setChecked(true);
         mPriority = 1;
+
     }
 
 
@@ -44,12 +50,27 @@ public class AddTaskActivity extends AppCompatActivity {
      */
     public void onClickAddTask(View view) {
         // Not yet implemented
-        // TODO (6) Check if EditText is empty, if not retrieve input and store it in a ContentValues object
 
-        // TODO (7) Insert new task data via a ContentResolver
+        // OK (6) Check if EditText is empty, if not retrieve input and store it in a ContentValues object
+        String input = ((EditText) findViewById(R.id.editTextTaskDescription)).getText().toString();
+        if(input.length() == 0) {
+            return;
+        }
 
-        // TODO (8) Display the URI that's returned with a Toast
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TaskContract.TaskEntry.COLUMN_DESCRIPTION, input);
+        contentValues.put(TaskContract.TaskEntry.COLUMN_PRIORITY, mPriority);
+
+        // OK (7) Insert new task data via a ContentResolver
+        Uri uriInsert = getContentResolver().insert(TaskContract.TaskEntry.CONTENT_URI, contentValues);
+
+        // OK (8) Display the URI that's returned with a Toast
+        if(uriInsert != null) {
+            Toast.makeText(getBaseContext(), uriInsert.toString(), Toast.LENGTH_SHORT).show();
+        }
+
         // [Hint] Don't forget to call finish() to return to MainActivity after this insert is complete
+        finish();
 
     }
 

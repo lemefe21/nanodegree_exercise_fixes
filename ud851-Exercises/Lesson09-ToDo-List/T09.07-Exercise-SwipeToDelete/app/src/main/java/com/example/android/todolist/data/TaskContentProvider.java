@@ -192,14 +192,59 @@ public class TaskContentProvider extends ContentProvider {
     public int update(@NonNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
 
-        throw new UnsupportedOperationException("Not yet implemented");
+        final SQLiteDatabase db = mTaskDbHelper.getWritableDatabase();
+        int taskUpdated;
+        int match = sUriMatcher.match(uri);
+        
+        switch (match) {
+            
+            case TASK_WITH_ID:
+
+                //update item by your ID
+                String id = uri.getPathSegments().get(1);
+                taskUpdated = db.update(TaskContract.TaskEntry.TABLE_NAME, values, "_id=?", new String[]{id});
+
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+            
+        }
+
+        //throw new UnsupportedOperationException("Not yet implemented");
+        if(taskUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return taskUpdated;
+
     }
 
 
     @Override
     public String getType(@NonNull Uri uri) {
 
-        throw new UnsupportedOperationException("Not yet implemented");
+        /* getType() handles requests for the MIME type of data
+        We are working with two types of data:
+        1) a directory and 2) a single row of data.
+        This method will not be used in our app, but gives a way to standardize the data formats
+        that your provider accesses, and this can be useful for data organization.
+        For now, this method will not be used but will be provided for completeness.
+         */
+
+        int match = sUriMatcher.match(uri);
+
+        switch (match) {
+
+            case TASKS: //directory
+                return "vnd.android.cursor.dir" + "/" + TaskContract.AUTHORITY + "/" + TaskContract.PATH_TASKS;
+            case TASK_WITH_ID: // single item type
+                return "vnd.android.cursor.item" + "/" + TaskContract.AUTHORITY + "/" + TaskContract.PATH_TASKS;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+
+        }
+
     }
 
 }

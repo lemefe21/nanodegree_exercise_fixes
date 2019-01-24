@@ -120,15 +120,52 @@ public class TaskContentProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
 
-        // TODO (1) Get access to underlying database (read-only for query)
+        // OK (1) Get access to underlying database (read-only for query)
+        final SQLiteDatabase db = mTaskDbHelper.getReadableDatabase();
 
-        // TODO (2) Write URI match code and set a variable to return a Cursor
+        // OK (2) Write URI match code and set a variable to return a Cursor
+        int match = sUriMatcher.match(uri);
 
-        // TODO (3) Query for the tasks directory and write a default case
+        // OK (3) Query for the tasks directory and write a default case
+        // OK (4) Set a notification URI on the Cursor and return that Cursor
 
-        // TODO (4) Set a notification URI on the Cursor and return that Cursor
+        Cursor cursor;
 
-        throw new UnsupportedOperationException("Not yet implemented");
+        switch (match) {
+            case TASKS:
+
+                cursor = db.query(TaskContract.TaskEntry.TABLE_NAME, projection, selection, selectionArgs,
+                        null, null, sortOrder);
+
+                break;
+
+
+            case TASK_WITH_ID:
+
+                //using selection and selectionArgs
+                //URI: content://<authority>/tasks/#
+
+                //get(1) is the next data in segment >> /#
+
+                String id = uri.getPathSegments().get(1);
+
+                String mSelection = "_id=?";
+                String[] mSelectionArgs = new String[]{id};
+
+                cursor = db.query(TaskContract.TaskEntry.TABLE_NAME, projection, mSelection, mSelectionArgs,
+                        null, null, sortOrder);
+
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        return cursor;
+
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
 
