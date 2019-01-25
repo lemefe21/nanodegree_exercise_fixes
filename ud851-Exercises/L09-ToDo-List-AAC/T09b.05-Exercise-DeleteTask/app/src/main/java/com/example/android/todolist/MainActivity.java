@@ -76,14 +76,32 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
             // Called when a user swipes left or right on a ViewHolder
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+
+                //swipeDir >> identifies the direction we slip to perform different actions in onSwiped
+
                 // Here is where you'll implement swipe to delete
-                // TODO (1) Get the diskIO Executor from the instance of AppExecutors and
+                // OK (1) Get the diskIO Executor from the instance of AppExecutors and
                 // call the diskIO execute method with a new Runnable and implement its run method
 
-                // TODO (3) get the position from the viewHolder parameter
-                // TODO (4) Call deleteTask in the taskDao with the task at that position
-                // TODO (6) Call retrieveTasks method to refresh the UI
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        int itemPosition = viewHolder.getAdapterPosition();
+                        List<TaskEntry> tasksEntriesList = mAdapter.getTasksEntriesList();
+
+                        mDb.taskDao().deleteTask(tasksEntriesList.get(itemPosition));
+
+                        retrieveTasks();
+
+                    }
+                });
+
+                // OK (3) get the position from the viewHolder parameter
+                // OK (4) Call deleteTask in the taskDao with the task at that position
+                // OK (6) Call retrieveTasks method to refresh the UI
+
             }
         }).attachToRecyclerView(mRecyclerView);
 
@@ -114,7 +132,11 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO (5) Extract the logic to a retrieveTasks method so it can be reused
+        // OK (5) Extract the logic to a retrieveTasks method so it can be reused
+        retrieveTasks();
+    }
+
+    private void retrieveTasks() {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
