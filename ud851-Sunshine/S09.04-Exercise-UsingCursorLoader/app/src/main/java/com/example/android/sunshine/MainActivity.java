@@ -99,8 +99,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_forecast);
         getSupportActionBar().setElevation(0f);
 
-
-
+        //fake data
         FakeDataUtils.insertFakeData(this);
 
         /*
