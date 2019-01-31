@@ -20,18 +20,59 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.android.sunshine.data.WeatherContract;
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.Driver;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.Trigger;
+
+import java.util.concurrent.TimeUnit;
 
 public class SunshineSyncUtils {
 
-//  TODO (10) Add constant values to sync Sunshine every 3 - 4 hours
+//  OK (10) Add constant values to sync Sunshine every 3 - 4 hours
+//  OK (11) Add a sync tag to identify our sync job
+
+    //private static final int REMINDER_INTERVAL_MINUTES = 1;
+    //private static final int REMINDER_INTERVAL_SECONDS = (int) (TimeUnit.MINUTES.toSeconds(REMINDER_INTERVAL_MINUTES));
+    //private static final int SYNC_FLEXTIME_SECONDS = REMINDER_INTERVAL_SECONDS;
+
+    private static final int SYNC_INTERVAL_HOURS = 3;
+    private static final int SYNC_INTERVAL_SECONDS = (int) TimeUnit.HOURS.toSeconds(SYNC_INTERVAL_HOURS);
+    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS / 3;
+
+    private static final String REMINDER_JOB_TAG = "sync_weather_reminder_tag";
 
     private static boolean sInitialized;
 
-//  TODO (11) Add a sync tag to identify our sync job
+//  OK (12) Create a method to schedule our periodic weather sync
+    private static void schedulePeriodicWeatherSync(final Context context) {
 
-//  TODO (12) Create a method to schedule our periodic weather sync
+        Log.i("TestSync", "SunshineSyncUtils.schedulePeriodicWeatherSync - " + context);
+
+        Driver driver = new GooglePlayDriver(context);
+
+        FirebaseJobDispatcher jobDispatcher = new FirebaseJobDispatcher(driver);
+
+        Job constraitReminberJob = jobDispatcher.newJobBuilder()
+                .setService(SunshineFirebaseJobService.class)
+                .setTag(REMINDER_JOB_TAG)
+                .setConstraints(Constraint.ON_ANY_NETWORK)
+                .setLifetime(Lifetime.FOREVER)
+                .setRecurring(true)
+                .setTrigger(Trigger.executionWindow( SYNC_INTERVAL_SECONDS,
+                        SYNC_INTERVAL_SECONDS + SYNC_FLEXTIME_SECONDS))
+                .setReplaceCurrent(true)
+                .build();
+
+        jobDispatcher.schedule(constraitReminberJob);
+
+    }
 
     /**
      * Creates periodic sync tasks and checks to see if an immediate sync is required. If an
@@ -42,15 +83,19 @@ public class SunshineSyncUtils {
      */
     synchronized public static void initialize(@NonNull final Context context) {
 
+        Log.i("TestSync", "SunshineSyncUtils.initialize - " + context.getPackageCodePath());
+
         /*
          * Only perform initialization once per app lifetime. If initialization has already been
          * performed, we have nothing to do in this method.
          */
+        Log.i("TestSync", "SunshineSyncUtils - sInitialized: " + sInitialized);
         if (sInitialized) return;
 
         sInitialized = true;
 
-//      TODO (13) Call the method you created to schedule a periodic weather sync
+//      OK (13) Call the method you created to schedule a periodic weather sync
+        schedulePeriodicWeatherSync(context);
 
         /*
          * We need to check to see if our ContentProvider has data to display in our forecast
@@ -116,6 +161,9 @@ public class SunshineSyncUtils {
      * @param context The Context used to start the IntentService for the sync.
      */
     public static void startImmediateSync(@NonNull final Context context) {
+
+        Log.i("TestSync", "SunshineSyncUtils.startImmediateSync - " + context.getPackageName());
+
         Intent intentToSyncImmediately = new Intent(context, SunshineSyncIntentService.class);
         context.startService(intentToSyncImmediately);
     }

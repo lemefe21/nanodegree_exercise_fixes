@@ -18,6 +18,7 @@ package com.example.android.sunshine.sync;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.example.android.sunshine.data.WeatherContract;
 import com.example.android.sunshine.utilities.NetworkUtils;
@@ -38,6 +39,7 @@ public class SunshineSyncTask {
      */
     synchronized public static void syncWeather(Context context) {
 
+        Log.i("TestSync", "SunshineSyncTask.syncWeather - " + context.getPackageName());
 
         try {
             /*
@@ -49,6 +51,8 @@ public class SunshineSyncTask {
 
             /* Use the URL to retrieve the JSON */
             String jsonWeatherResponse = NetworkUtils.getResponseFromHttpUrl(weatherRequestUrl);
+
+            Log.i("TestSync", "SunshineSyncTask.syncWeather - NetworkUtils.getResponseFromHttpUrl >> jsonWeatherResponse");
 
             /* Parse the JSON into a list of weather values */
             ContentValues[] weatherValues = OpenWeatherJsonUtils
