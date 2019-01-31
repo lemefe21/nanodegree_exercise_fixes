@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements
 
         //  OK (7) Call SunshineSyncUtils's initialize method instead of startImmediateSync
         //SunshineSyncUtils.startImmediateSync(this);
+        Log.i("TestSync", "MainActivity.onCreate >> SunshineSyncUtils - " + this);
         SunshineSyncUtils.initialize(this);
 
     }

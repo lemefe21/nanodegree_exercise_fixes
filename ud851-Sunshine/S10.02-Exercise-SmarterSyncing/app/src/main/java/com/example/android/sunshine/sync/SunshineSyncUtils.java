@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.android.sunshine.data.WeatherContract;
 
@@ -45,6 +46,8 @@ public class SunshineSyncUtils {
      *                ContentResolver
      */
     synchronized public static void initialize(final Context context) {
+
+        Log.i("TestSync", "SunshineSyncUtils.initialize - " + context.getPackageCodePath());
 
         /*
          * Only perform initialization once per app lifetime. If initialization has already been
@@ -123,6 +126,9 @@ public class SunshineSyncUtils {
      * @param context The Context used to start the IntentService for the sync.
      */
     public static void startImmediateSync(@NonNull final Context context) {
+
+        Log.i("TestSync", "SunshineSyncUtils.startImmediateSync - " + context.getPackageName());
+
         Intent intentToSyncImmediately = new Intent(context, SunshineSyncIntentService.class);
         context.startService(intentToSyncImmediately);
     }
