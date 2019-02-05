@@ -17,6 +17,7 @@ package com.example.android.sunshine;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -30,6 +31,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.android.sunshine.data.WeatherContract;
+import com.example.android.sunshine.databinding.ActivityDetailBinding;
 import com.example.android.sunshine.utilities.SunshineDateUtils;
 import com.example.android.sunshine.utilities.SunshineWeatherUtils;
 
@@ -86,7 +88,8 @@ public class DetailActivity extends AppCompatActivity implements
     /* The URI that is used to access the chosen day's weather details */
     private Uri mUri;
 
-//  TODO (2) Remove all the TextView declarations
+//  OK (2) Remove all the TextView declarations
+    /*
     private TextView mDateView;
     private TextView mDescriptionView;
     private TextView mHighTemperatureView;
@@ -94,6 +97,7 @@ public class DetailActivity extends AppCompatActivity implements
     private TextView mHumidityView;
     private TextView mWindView;
     private TextView mPressureView;
+    */
 
     /*
      * This field is used for data binding. Normally, we would have to call findViewById many
@@ -102,15 +106,17 @@ public class DetailActivity extends AppCompatActivity implements
      * in onCreate of this class. Then, we can access all of the Views in our layout
      * programmatically without cluttering up the code with findViewById.
      */
-//  TODO (3) Declare an ActivityDetailBinding field called mDetailBinding
+//  OK (3) Declare an ActivityDetailBinding field called mDetailBinding
+    ActivityDetailBinding mDetailBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//      TODO (4) Remove the call to setContentView
-        setContentView(R.layout.activity_detail);
+//      OK (4) Remove the call to setContentView
+        //setContentView(R.layout.activity_detail);
 
-//      TODO (5) Remove all the findViewById calls
+//      OK (5) Remove all the findViewById calls
+        /*
         mDateView = (TextView) findViewById(R.id.date);
         mDescriptionView = (TextView) findViewById(R.id.weather_description);
         mHighTemperatureView = (TextView) findViewById(R.id.high_temperature);
@@ -118,8 +124,10 @@ public class DetailActivity extends AppCompatActivity implements
         mHumidityView = (TextView) findViewById(R.id.humidity);
         mWindView = (TextView) findViewById(R.id.wind);
         mPressureView = (TextView) findViewById(R.id.pressure);
+        */
 
-//      TODO (6) Instantiate mDetailBinding using DataBindingUtil
+//      OK (6) Instantiate mDetailBinding using DataBindingUtil
+        mDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
 
         mUri = getIntent().getData();
         if (mUri == null) throw new NullPointerException("URI for DetailActivity cannot be null");
@@ -257,6 +265,7 @@ public class DetailActivity extends AppCompatActivity implements
         }
 
 //      TODO (7) Display the weather icon using mDetailBinding
+        mDetailBinding. = SunshineWeatherUtils.getLargeArtResourceIdForWeatherCondition(data.getInt(INDEX_WEATHER_CONDITION_ID));
 
         /****************
          * Weather Date *
